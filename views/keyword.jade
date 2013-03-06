@@ -1,0 +1,8 @@
+extends layout
+
+block content
+  h1= title
+  h3 Tweets related to #{title}
+  ul
+    each tweet in tweets
+      li= tweet
