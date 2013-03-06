@@ -2,4 +2,6 @@ extends layout
 
 block content
   h1 Search for tweets
-  input(type='text')
+  form(method='post', action='')
+    input(type='text', name='keyword')
+    input(type='submit', name='submit', value='Submit')

@@ -10,7 +10,6 @@ var express = require('express')
   , path = require('path');
 
 var app = express();
-var store = new express.session.MemoryStore;
 
 app.configure(function() {
 
@@ -29,18 +28,17 @@ app.configure(function() {
 
 });
 
-app.configure('development', function(){
+app.configure('development', function() {
   app.use(express.errorHandler());
 });
 
-//app.get('/', routes.search);
-app.get('/keyword/:keyword', routes.keyword);
-//app.get('/auth/twitter', routes.auth);
-//app.get('/search', routes.auth_callback);
+app.get('/', routes.search);
+app.post('/', routes.keyword);
 
+//app.get('/keyword/:keyword', routes.keyword);
 //app.get('/users', user.list);
 
-http.createServer(app).listen(app.get('port'), function(){
+http.createServer(app).listen(app.get('port'), function() {
   console.log("Express server listening on port " + app.get('port'));
 });
 
