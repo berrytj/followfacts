@@ -1,0 +1,12 @@
+extends layout
+
+block content
+
+	h1= title
+	
+	each comment in comments
+		- var qual = Math.round(comment.quality * 100)
+		div Quality: <b>#{qual}</b>
+		div.text= comment.text
+		div= comment.url
+		<br>

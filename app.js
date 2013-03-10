@@ -3,6 +3,8 @@
  * Module dependencies.
  */
 
+var nomo = require('node-monkey').start();
+
 var express = require('express')
   , routes = require('./routes')
   , user = require('./routes/user')
@@ -33,13 +35,19 @@ app.configure('development', function() {
 });
 
 app.get('/', routes.search);
-app.post('/', routes.keyword);
+app.post('/', routes.respond);
+
+app.get('/reddit', routes.reddit);
 
 //app.get('/keyword/:keyword', routes.keyword);
 //app.get('/users', user.list);
 
+//var reddit = require('./collect_data/reddit');
+//reddit.collect();
+
+
 http.createServer(app).listen(app.get('port'), function() {
-  console.log("Express server listening on port " + app.get('port'));
+    console.log('Express server listening on port ' + app.get('port'));
 });
 
 

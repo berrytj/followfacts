@@ -5,4 +5,16 @@ block content
   h3 Tweets related to #{title}
   ul
     each tweet in tweets
-      li= tweet
+      - var text = tweet.text
+      - var user = tweet.user
+      - var name = user.name
+      - var username = user.screen_name
+      - var retweets = tweet.retweet_count
+      - var followers = user.followers_count
+      - var quality = Math.round(100000 * retweets / followers)
+      li Name: <b>#{name}</b>, Username: <b>#{username}</b>, Quality: <b>#{quality}</b>
+      li --- #{text}
+      <br>
+
+  <br>
+  a(href='/') Back to search
