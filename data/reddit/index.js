@@ -1,5 +1,11 @@
 
 
+
+//				       *************					    //
+//    REDDIT DATA COLLECTION SCRIPT, RUN FROM NODE SHELL    //
+//				       *************					    //
+
+
 var PER_SUBREDDIT = 3;
 var MIN_CHARS = 140;
 var MIN_QUAL = 0;
@@ -17,8 +23,8 @@ var subs = [
 //	'askscience',
 //	'economics'
 ];
-var agent = 'follow facts bot v0.01 by /u/tberry860';
 
+var agent = 'follow facts bot v0.01 by /u/tberry860';
 var rest = require('../../rest');  // need to specify '../'?
 var mongo = require('mongodb');
 var Server = mongo.Server;
@@ -208,8 +214,7 @@ var saveComment = function(comment, comments, url, post_score) {
 	saveComment(comments.pop(), comments, url, post_score);
 };
 
-// Function calculates lower bound of Wilson
-// score confidence interval, explained at:
+// Calculate lower bound of Wilson score confidence interval, explained at:
 // http://www.evanmiller.org/how-not-to-sort-by-average-rating.html
 var getQuality = function(score, views) {
 	

@@ -6,6 +6,7 @@ var NUM_SUBREDDITS = 8;
 var queue = $.Deferred();
 queue.resolve();
 
+// Using a queue to process server requests in order without blocking UI.
 var addToQueue = function(included) {
 
 	$('.loading').text('loading...');

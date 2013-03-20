@@ -1,5 +1,9 @@
 
 
+//				      *************						//
+//    HELPER FUNCTIONS FOR MAKING EXTERNAL API CALLS    //
+//				      *************						//
+
 var http = require("http");
 var https = require("https");
 

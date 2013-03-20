@@ -1,5 +1,10 @@
 
 
+//				          *************			     		  //
+//    ROUTES FOR DISPLAYING CONTENT FROM TWITTER OR REDDIT    //
+//				          *************						  //
+
+
 // These subreddits were picked for their
 // quality -- subjective and subject to change.
 var all_subs = [
