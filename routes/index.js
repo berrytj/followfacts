@@ -1,10 +1,23 @@
 
 
+// These subreddits were picked for their
+// quality -- subjective and subject to change.
+var all_subs = [
+	'politics',
+	'askreddit',
+	'worldnews',
+	'todayilearned',
+	'technology',
+	'atheism',
+	'science', 
+	'economics'
+];
+
 var rest = require('../rest');
 
 var twitter = function(req, res) {
   
-	var keyword = req.body.keyword;
+	var keyword = req.body.keyword;  // Keyword is in `body` due to POST request.
 	var params = {
 		q: keyword,
 		'result_type': 'popular',
@@ -12,7 +25,7 @@ var twitter = function(req, res) {
 	};
 	
 	var param_string = '';
-	for (var prop in params) {
+	for (var prop in params) {  // Create parameter string query Twitter API with.
 		if (params.hasOwnProperty(prop)) param_string += '&' + prop + '=' + params[prop];
 	}
   
@@ -43,7 +56,7 @@ exports.respond = function(req, res) {
 
 };
 
-exports.reddit = function(req, res) {
+var getDB = function() {
 
 	var mongo = require('mongodb');
 	var Server = mongo.Server;
@@ -51,22 +64,40 @@ exports.reddit = function(req, res) {
 	var Connection = mongo.Connection;
 	var host = 'localhost';
 	var port = Connection.DEFAULT_PORT;
-	var db = new Db('reddit', new Server(host, port, {}), {w:1});
+	return new Db('reddit', new Server(host, port, {}), {w:1});
+
+};
+
+exports.reddit = function(req, res) {
+
+	var subs = req.body.subs || all_subs;
+	var options = { long: true, sub: { $in: subs } };  // Comments with text over 300 chars have long:true.
+	var db = getDB();
 
 	db.open(function(err, db) {
 
-		db.collection('comments_top', function(err, coll) {
-		//db.collection('comments_smart', function(err, coll) {
+		db.collection('comments_smart', function(err, coll) {
 
-			coll.find().sort({ quality: -1 }).toArray(function(err, results) {
+			coll.find(options).sort({ quality: -1 }).toArray(function(err, results) {
 
-				results = results.slice(0, 200);
-				res.render('reddit', { title: 'Comments', comments: results });
+				if (!results) {
+					res.send('');
+					return;
+				}
 
+				results = results.slice(0, 200); // Just first 200 for now.
+				
+				res.render('reddit', {
+
+					title:    'Comments',
+					comments: results,
+					subs:     all_subs,
+
+				});
 			});
 		});
 	});
-	
+
 };
 
 

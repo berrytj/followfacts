@@ -9,7 +9,7 @@ var https = require("https");
  * @param callback: callback to pass the results JSON object(s) back
  */
 
-var validate = function(res, output, callback, extra) {
+var validate = function(output, res, options, callback, extra) {
 
 	try {
 
@@ -18,26 +18,25 @@ var validate = function(res, output, callback, extra) {
 
 	} catch(ex) {
 		
-		console.log('ALERT: problem with reddit data.  skipping this request. error: ' + ex);
-		//try again?
+		console.log('ALERT: problem with reddit data. repeating this request. error: ' + ex);
+		callback('repeat', options, extra);
 
 	}
 
 };
 
-var chunk = function(res, callback, extra) {
+var chunk = function(res, options, callback, extra) {
 
  	res.setEncoding('utf8');
 		
  	var output = '';
 
  	res.on('data', function (chunk) {
- 		console.log('data received for url ' + extra);
 		output += chunk;
 	});
 
  	res.on('end', function() {
-		validate(res, output, callback, extra);
+		validate(output, res, options, callback, extra);
 	});
 
 };
@@ -46,15 +45,17 @@ exports.getJSON = function(options, callback, extra) {
 
 	var protoc = (options.port === 443) ? https : http;
 
-	console.log('about to make json request for url ' + extra);
+	console.log('about to make json request for subreddit | url: ' + extra);
 
 	var req = protoc.request(options, function(res) {
+
 		console.log('request made for url ' + extra);
-		chunk(res, callback, extra);
+		chunk(res, options, callback, extra);
+		
 	});
 
 	req.on('error', function(err) {
-		res.send('Inside getJSON, error: ' + err.message);
+		console.log('ERROR, inside getJSON, subreddit | url: ' + extra + ', message: ' + err.message);
 	});
 
 	req.end();
@@ -93,7 +94,7 @@ var info = {
 
 };
 
-
+// Build request options specific to the site being queried.
 exports.getOptions = function(site, params) {
 
   var props = info[site];

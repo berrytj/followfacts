@@ -38,6 +38,7 @@ app.get('/', routes.search);
 app.post('/', routes.respond);
 
 app.get('/reddit', routes.reddit);
+app.post('/reddit', routes.reddit);
 
 //app.get('/keyword/:keyword', routes.keyword);
 //app.get('/users', user.list);
