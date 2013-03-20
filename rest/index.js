@@ -3,12 +3,7 @@
 var http = require("http");
 var https = require("https");
 
-/**
- * getJSON:  REST get request returning JSON object(s)
- * @param options: http options object
- * @param callback: callback to pass the results JSON object(s) back
- */
-
+// Validate API response, catching exceptions if bad data is returned.
 var validate = function(output, res, options, callback, extra) {
 
 	try {
@@ -16,7 +11,7 @@ var validate = function(output, res, options, callback, extra) {
 		var obj = JSON.parse(output);
 		callback(res.statusCode, obj, extra);
 
-	} catch(ex) {
+	} catch(ex) {  // If JSON isn't valid (usually bad data from Reddit)...
 		
 		console.log('ALERT: problem with reddit data. repeating this request. error: ' + ex);
 		callback('repeat', options, extra);
@@ -25,6 +20,7 @@ var validate = function(output, res, options, callback, extra) {
 
 };
 
+// Concatenate response.
 var chunk = function(res, options, callback, extra) {
 
  	res.setEncoding('utf8');
@@ -41,6 +37,7 @@ var chunk = function(res, options, callback, extra) {
 
 };
 
+// Make API request, given options, callback, and any extra data to pass along.
 exports.getJSON = function(options, callback, extra) {
 
 	var protoc = (options.port === 443) ? https : http;

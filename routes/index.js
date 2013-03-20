@@ -15,6 +15,9 @@ var all_subs = [
 
 var rest = require('../rest');
 
+// Collect statuses from Twitter based on a keyword.  Experimenting with
+// ways to search and rank statuses (and rank them compared to content from
+// other sites, like Reddit).
 var twitter = function(req, res) {
   
 	var keyword = req.body.keyword;  // Keyword is in `body` due to POST request.
@@ -42,10 +45,12 @@ var twitter = function(req, res) {
 	
 };
 
+// Shows search field.
 exports.search = function(req, res) {
 	res.render('search', { title: 'Search' });
 };
 
+// Called on POST requests from search view.
 exports.respond = function(req, res) {
 	
 	if (req.body.site === 'Twitter') {
@@ -56,6 +61,7 @@ exports.respond = function(req, res) {
 
 };
 
+// Get MongoDB database.
 var getDB = function() {
 
 	var mongo = require('mongodb');
@@ -68,9 +74,11 @@ var getDB = function() {
 
 };
 
+// Shows an assortment of Reddit comments, sorted by
+// quality and separated by category (subreddit).
 exports.reddit = function(req, res) {
 
-	var subs = req.body.subs || all_subs;
+	var subs = req.body.subs || all_subs;  // Get selected categories.
 	var options = { long: true, sub: { $in: subs } };  // Comments with text over 300 chars have long:true.
 	var db = getDB();
 
@@ -78,6 +86,7 @@ exports.reddit = function(req, res) {
 
 		db.collection('comments_smart', function(err, coll) {
 
+			// Get comments that conform to `options`, sorted by descending quality.
 			coll.find(options).sort({ quality: -1 }).toArray(function(err, results) {
 
 				if (!results) {
@@ -97,7 +106,6 @@ exports.reddit = function(req, res) {
 			});
 		});
 	});
-
 };
 
 

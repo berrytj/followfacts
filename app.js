@@ -3,6 +3,7 @@
  * Module dependencies.
  */
 
+// Using node-monkey to inspect objects in Chrome dev tools.
 var nomo = require('node-monkey').start();
 
 var express = require('express')
@@ -34,6 +35,8 @@ app.configure('development', function() {
   app.use(express.errorHandler());
 });
 
+// Still playing around with general app functionality / routes:
+
 app.get('/', routes.search);
 app.post('/', routes.respond);
 
@@ -45,7 +48,6 @@ app.post('/reddit', routes.reddit);
 
 //var reddit = require('./collect_data/reddit');
 //reddit.collect();
-
 
 http.createServer(app).listen(app.get('port'), function() {
     console.log('Express server listening on port ' + app.get('port'));

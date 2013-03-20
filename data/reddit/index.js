@@ -29,6 +29,7 @@ var port = Connection.DEFAULT_PORT;
 var db = new Db('reddit', new Server(host, port, {}), {w:1});
 var colls = {};
 
+// Open mongo database and store collections in variables.
 db.open(function(err, db) {
 
 	db.collection('posts', function(err, coll) {
@@ -151,6 +152,7 @@ var getCommentsIfNew = function(url, options, item) {
 
 };
 
+// Initiate recursive calls of saveComment on each comment of the post.
 var saveComments = function(err, result, url) {
 	
 	if (err === 'repeat') {
@@ -173,6 +175,7 @@ var saveComments = function(err, result, url) {
 
 };
 
+// Save comment to our DB with the specified attributes.
 var saveComment = function(comment, comments, url, post_score) {
 
 	if (!comment) {  // No comments are left; mark post complete in DB.
@@ -205,11 +208,11 @@ var saveComment = function(comment, comments, url, post_score) {
 	saveComment(comments.pop(), comments, url, post_score);
 };
 
+// Function calculates lower bound of Wilson
+// score confidence interval, explained at:
+// http://www.evanmiller.org/how-not-to-sort-by-average-rating.html
 var getQuality = function(score, views) {
-	// Function calculates lower bound of Wilson
-	// score confidence interval, explained at:
-	// http://www.evanmiller.org/how-not-to-sort-by-average-rating.html
-
+	
 	if (views === 0) return 0;
 
 	// Equation is split up for clarity.
