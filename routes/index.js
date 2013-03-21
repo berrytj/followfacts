@@ -1,8 +1,8 @@
 
 
-//				          *************			     		  //
+//			 *************		              //
 //    ROUTES FOR DISPLAYING CONTENT FROM TWITTER OR REDDIT    //
-//				          *************						  //
+//			 *************			      //
 
 
 // These subreddits were picked for their

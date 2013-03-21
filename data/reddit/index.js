@@ -1,9 +1,9 @@
 
 
 
-//				       *************					    //
+//			*************	    		    //
 //    REDDIT DATA COLLECTION SCRIPT, RUN FROM NODE SHELL    //
-//				       *************					    //
+//			*************	    		    //
 
 
 var PER_SUBREDDIT = 3;
@@ -119,10 +119,13 @@ var getComments = function(post, posts, sub, next) {
 	post = post.data;
 	var id = post.id;
 	var url = post.permalink;
+
 	var options = {
+
 		host: 'api.reddit.com',
 		path: '/comments/' + id + '.json?sort=confidence',
 		'user-agent': agent,
+		
 	};
 	
 	// Check if this post is already saved in our DB.
@@ -130,10 +133,8 @@ var getComments = function(post, posts, sub, next) {
 
 		getCommentsIfNew(url, options, item);
 		
-		setTimeout(function() {
-			// Calling getComments recursively until out of posts,
-			// but waiting a few seconds each time per Reddit API rules.
-			getComments(posts.pop(), posts, sub, next);
+		setTimeout(function() {				     // Call getComments recursively until out of posts,
+			getComments(posts.pop(), posts, sub, next);  // but wait a few seconds each time per Reddit API rules.
 		}, WAIT);
 
 	});
@@ -250,11 +251,6 @@ var getMorePosts = function(sub, next) {
 	}
 
 };
-
-
-
-
-
 
 
 
