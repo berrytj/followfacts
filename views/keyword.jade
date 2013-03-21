@@ -5,6 +5,8 @@ block content
   h3 Tweets related to #{title}
   ul
     each tweet in tweets
+      - // Prototyping various display options.
+      - // Will remove logic from view once settled.
       - var text = tweet.text
       - var user = tweet.user
       - var name = user.name
